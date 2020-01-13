@@ -20,7 +20,7 @@ namespace ChinookSystem.Data.Entities
         public int AlbumId { get; set; }
         [Required(ErrorMessage ="Album Title is required")]
         [StringLength(160, ErrorMessage ="Album Title is limited to 160 characters")]
-        public string AlbumTitle { get; set; }
+        public string Title { get; set; }
         [Required(ErrorMessage = "Artist Id is required")]
         public int ArtistId { get; set; }
         [Required(ErrorMessage = "Album release year is required")]
