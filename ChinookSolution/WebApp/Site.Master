@@ -48,12 +48,12 @@
                     <a class="navbar-brand" runat="server" href="~/">Class Samples A03</a>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                   <%-- <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a runat="server" href="~/About">About</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
                         <li><a runat="server" href="~/SamplePages/ODSReview">ODS Review</a></li>
-                    </ul>
+                    </ul>--%>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
@@ -70,6 +70,27 @@
                             </ul>
                         </LoggedInTemplate>
                     </asp:LoginView>
+                    <asp:Menu ID="navMenu" runat="server" 
+                    BackColor="#222222" BorderColor="Red"
+                    StaticMenuItemStyle-ForeColor="#999999" 
+                    StaticMenuItemStyle-VerticalPadding="15px"
+                    StaticMenuItemStyle-HorizontalPadding="10px"
+                    RenderingMode="List" Orientation="Horizontal" 
+                    DynamicMenuItemStyle-ForeColor="#999999" 
+                    DynamicMenuStyle-BackColor="Black">
+                    <Items>
+                        <asp:MenuItem Text="Home" NavigateUrl="~/"></asp:MenuItem>
+
+                        <asp:MenuItem Text="Samples" Value="Samples">
+                            <asp:MenuItem Text="ODS Review" NavigateUrl="~/SamplePages/ODSReview.aspx"></asp:MenuItem>
+                            
+
+                        </asp:MenuItem>
+
+                        <asp:MenuItem Text="About Us" NavigateUrl="~/About.aspx"></asp:MenuItem>
+                         <asp:MenuItem Text="Contact Us" NavigateUrl="~/Contact.aspx"></asp:MenuItem>
+                    </Items>
+                </asp:Menu>
                 </div>
             </div>
         </div>
