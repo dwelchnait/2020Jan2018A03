@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ChinookSystem.Data.Entities;
 using ChinookSystem.DAL;
 using System.ComponentModel;
+using DMIT2018Common.UserControls;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -15,6 +16,11 @@ namespace ChinookSystem.BLL
     [DataObject]
     public class AlbumController
     {
+        //this List<T> will hold a series of error message strings
+        //this List<T> will be used by MessageUserControl via the
+        //    BusinessRuleException()
+        private List<string> reasons = new List<string>();
+
         #region Queries
         [DataObjectMethod(DataObjectMethodType.Select,false)]
         public List<Album> Album_List()
@@ -64,10 +70,94 @@ namespace ChinookSystem.BLL
         #endregion
 
         #region Add, Update, Delete
+        [DataObjectMethod(DataObjectMethodType.Insert,false)]
+        public int Album_Add(Album item)
+        {
+            using (var context = new ChinookContext())
+            {
+                //addition logic
+                if (CheckReleaseYear(item))
+                {
+                    item.ReleaseLabel = string.IsNullOrEmpty(item.ReleaseLabel) ?
+                        null : item.ReleaseLabel;
 
+                    context.Albums.Add(item);   //staging
+                    context.SaveChanges();      //actual commit to the database
+                    return item.AlbumId;        //the instance now has the identity pkey value
+                }
+                else
+                {
+                    throw new BusinessRuleException("Validation error", reasons);
+                }
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Update, false)]
+        public int Album_Update(Album item)
+        {
+            using (var context = new ChinookContext())
+            {
+                //addition logic
+                if (CheckReleaseYear(item))
+                {
+                    item.ReleaseLabel = string.IsNullOrEmpty(item.ReleaseLabel) ?
+                        null : item.ReleaseLabel;
+
+                    context.Entry(item).State = System.Data.Entity.EntityState.Modified;   //staging
+                    return context.SaveChanges();      //actual commit to the database  and return rowsaffected
+                }
+                else
+                {
+                    throw new BusinessRuleException("Validation error", reasons);
+                }
+            }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete,false)]
+        public int Album_Delete(Album item)
+        {
+            return Album_Delete(item.AlbumId);
+        }
+
+        //delete is a physical delete
+        public int Album_Delete(int albumid)
+        {
+            using (var context = new ChinookContext())
+            {
+                var existing = context.Albums.Find(albumid);
+                if (existing == null)
+                {
+                    throw new Exception("Record already has been removed. No additional removal done.");
+                }
+                context.Albums.Remove(existing);
+                return context.SaveChanges();
+            }
+        }
         #endregion
 
         #region Support Methods
+        private bool CheckReleaseYear(Album item)
+        {
+            bool isValid = true;
+            int releaseyear;
+            if(string.IsNullOrEmpty(item.ReleaseYear.ToString()))
+            {
+                isValid = false;
+                reasons.Add("Release year is required");
+            }
+            else if (!int.TryParse(item.ReleaseYear.ToString(), out releaseyear))
+            {
+                isValid = false;
+                reasons.Add("Release year is not a valid year number (yyyy)");
+            }
+            else if (releaseyear < 1950 || releaseyear > DateTime.Today.Year)
+            {
+                isValid = false;
+                reasons.Add(string.Format("Release year {0} is invalid. Year must be between 1950 and today.",
+                    releaseyear));
+            }
+            return isValid;
+        }
         #endregion
     }
 }
