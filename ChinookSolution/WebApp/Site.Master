@@ -83,7 +83,7 @@
 
                         <asp:MenuItem Text="Samples" Value="Samples">
                             <asp:MenuItem Text="ODS Review" NavigateUrl="~/SamplePages/ODSReview.aspx"></asp:MenuItem>
-                            
+                            <asp:MenuItem Text="ODS CRUD" NavigateUrl="~/SamplePages/ListViewODSCRUD.aspx"></asp:MenuItem>
 
                         </asp:MenuItem>
 
