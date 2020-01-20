@@ -6,20 +6,20 @@ namespace ChinookSystem.Data.Entities
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Artist
+    public partial class Genre
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Artist()
+        public Genre()
         {
-            Albums = new HashSet<Album>();
+            Tracks = new HashSet<Track>();
         }
 
-        public int ArtistId { get; set; }
+        public int GenreId { get; set; }
 
         [StringLength(120)]
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Album> Albums { get; set; }
+        public virtual ICollection<Track> Tracks { get; set; }
     }
 }
