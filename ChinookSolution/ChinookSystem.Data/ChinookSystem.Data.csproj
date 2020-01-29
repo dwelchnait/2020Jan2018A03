@@ -62,6 +62,7 @@
     <Compile Include="Entities\Playlist.cs" />
     <Compile Include="Entities\PlaylistTrack.cs" />
     <Compile Include="Entities\Track.cs" />
+    <Compile Include="POCOs\AlbumArtists.cs" />
     <Compile Include="POCOs\ListDDL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
