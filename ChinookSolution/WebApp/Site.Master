@@ -85,6 +85,7 @@
                             <asp:MenuItem Text="ODS Review" NavigateUrl="~/SamplePages/ODSReview.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="ODS CRUD" NavigateUrl="~/SamplePages/ListViewODSCRUD.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="Albums with Artists" NavigateUrl="~/SamplePages/AlbumsWithArtist.aspx"></asp:MenuItem>
+                            <asp:MenuItem Text="Repeater Demo for DTOs" NavigateUrl="~/SamplePages/RepeaterDemo.aspx"></asp:MenuItem>
                         </asp:MenuItem>
 
                         <asp:MenuItem Text="About Us" NavigateUrl="~/About.aspx"></asp:MenuItem>
