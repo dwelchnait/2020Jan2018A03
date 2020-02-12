@@ -1,6 +1,6 @@
 <Query Kind="Expression">
   <Connection>
-    <ID>2679fc39-7e05-4ba2-bc87-a4b797ce2943</ID>
+    <ID>571d9057-778e-4915-a3f7-18a4f076a644</ID>
     <Persist>true</Persist>
     <Server>.</Server>
     <Database>Chinook</Database>
@@ -132,6 +132,18 @@ select new
 					name = gc.LastName + ", " + gc.FirstName
 				}
 }
+
+//grouping on multiple attributes NOT a defined class
+from c in Customers
+group c by new {c.Country, c.State} into gResidence
+select gResidence
+
+
+
+
+
+
+
 
 
 
