@@ -55,7 +55,10 @@
     <Compile Include="BLL\AlbumController.cs" />
     <Compile Include="BLL\ArtistController.cs" />
     <Compile Include="BLL\BusinessRuleExpection.cs" />
+    <Compile Include="BLL\GenreController.cs" />
+    <Compile Include="BLL\MediaTypeController.cs" />
     <Compile Include="BLL\PlaylistController.cs" />
+    <Compile Include="BLL\PlaylistTracksController.cs" />
     <Compile Include="BLL\TrackController.cs" />
     <Compile Include="DAL\ChinookContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

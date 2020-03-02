@@ -66,6 +66,9 @@
     <Compile Include="POCOs\AlbumArtists.cs" />
     <Compile Include="POCOs\ListDDL.cs" />
     <Compile Include="POCOs\PlayListSong.cs" />
+    <Compile Include="POCOs\SelectionList.cs" />
+    <Compile Include="POCOs\TrackList.cs" />
+    <Compile Include="POCOs\UserPlaylistTrack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

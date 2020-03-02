@@ -193,6 +193,7 @@
     <Content Include="SamplePages\AccessingDataSetControls.aspx" />
     <Content Include="SamplePages\AlbumsWithArtist.aspx" />
     <Content Include="SamplePages\ListViewODSCRUD.aspx" />
+    <Content Include="SamplePages\ManagePlaylist.aspx" />
     <Content Include="SamplePages\ODSReview.aspx" />
     <Content Include="SamplePages\RepeaterDemo.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -387,6 +388,13 @@
     </Compile>
     <Compile Include="SamplePages\ListViewODSCRUD.aspx.designer.cs">
       <DependentUpon>ListViewODSCRUD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SamplePages\ManagePlaylist.aspx.cs">
+      <DependentUpon>ManagePlaylist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\ManagePlaylist.aspx.designer.cs">
+      <DependentUpon>ManagePlaylist.aspx</DependentUpon>
     </Compile>
     <Compile Include="SamplePages\ODSReview.aspx.cs">
       <DependentUpon>ODSReview.aspx</DependentUpon>
