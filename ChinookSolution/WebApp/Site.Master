@@ -87,6 +87,7 @@
                             <asp:MenuItem Text="Albums with Artists" NavigateUrl="~/SamplePages/AlbumsWithArtist.aspx"></asp:MenuItem>
                             <asp:MenuItem Text="Repeater Demo for DTOs" NavigateUrl="~/SamplePages/RepeaterDemo.aspx"></asp:MenuItem>
                              <asp:MenuItem Text="Accessing Data Controls" NavigateUrl="~/SamplePages/AccessingDataSetControls.aspx"></asp:MenuItem>
+                              <asp:MenuItem Text="Manage Playlist (OLTP)" NavigateUrl="~/SamplePages/ManagePlaylist.aspx"></asp:MenuItem>
                        </asp:MenuItem>
 
                         <asp:MenuItem Text="About Us" NavigateUrl="~/About.aspx"></asp:MenuItem>

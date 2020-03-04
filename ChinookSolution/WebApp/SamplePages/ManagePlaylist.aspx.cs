@@ -68,8 +68,26 @@ namespace WebApp.SamplePages
 
         protected void PlayListFetch_Click(object sender, EventArgs e)
         {
-            //code to go here
- 
+            if (string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                MessageUserControl.ShowInfo("Data Missing", "Enter the playlist name.");
+            }
+            else
+            {
+                string username = "HansenB";  // username will come from security once implemented
+
+                //MessageUserControl will be used to handle the code behind user friendly error handling
+                //you will NOT be using try/catch
+                //your try/catch is embedded within the MessageUserControl class
+                MessageUserControl.TryRun(() =>
+                {
+                    //coding block
+                    PlaylistTracksController sysmgr = new PlaylistTracksController();
+                    List<UserPlaylistTrack> info = sysmgr.List_TracksForPlaylist(PlaylistName.Text, username);
+                    PlayList.DataSource = info;
+                    PlayList.DataBind();
+                },"PlayList","Manage your playlist"); //strings after coding block is for success
+            }
         }
 
         protected void MoveDown_Click(object sender, EventArgs e)
@@ -100,7 +118,24 @@ namespace WebApp.SamplePages
         protected void TracksSelectionList_ItemCommand(object sender, 
             ListViewCommandEventArgs e)
         {
-            //code to go here
+            if(string.IsNullOrEmpty(PlaylistName.Text))
+            {
+                MessageUserControl.ShowInfo("Missing Data", "Enter a playlist name");
+            }
+            else
+            {
+                string username = "HansenB";
+                MessageUserControl.TryRun(() =>
+                {
+                    int trackid = int.Parse(e.CommandArgument.ToString());
+                    PlaylistTracksController sysmgr = new PlaylistTracksController();
+                    sysmgr.Add_TrackToPLaylist(PlaylistName.Text, username, trackid);
+                    List<UserPlaylistTrack> info = sysmgr.List_TracksForPlaylist(PlaylistName.Text, username);
+                    PlayList.DataSource = info;
+                    PlayList.DataBind();
+                },"Add Track","Track has been added to your playlist");
+            }
+            
             
         }
 
