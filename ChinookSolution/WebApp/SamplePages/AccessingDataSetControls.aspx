@@ -97,8 +97,6 @@
         <SelectParameters>
             <asp:ControlParameter ControlID="AlbumList" PropertyName="Text" 
                 Name="id" Type="Int32"></asp:ControlParameter>
-            <asp:ControlParameter ControlID="TracksBy" PropertyName="Text" 
-                Name="fetchby" Type="String"></asp:ControlParameter>
         </SelectParameters>
     </asp:ObjectDataSource>
         <asp:ObjectDataSource ID="AlbumListODS" runat="server" 

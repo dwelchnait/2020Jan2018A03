@@ -85,5 +85,31 @@ namespace ChinookSystem.BLL
                 return context.Tracks.Find(trackid);
             }
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<TrackList> Get_TracksForPlaylistSelection(int id)
+        {
+            using (var context = new ChinookContext())
+            {
+                List<TrackList> results = (from x in context.Tracks
+                                           where x.AlbumId == id 
+                                           select new TrackList
+                           {
+                               TrackID = x.TrackId,
+                               Name = x.Name,
+                               Title = x.Album.Title,
+                               ArtistName = x.Album.Artist.Name,
+                               MediaName = x.MediaType.Name,
+                               GenreName = x.Genre.Name,
+                               Composer = x.Composer,
+                               Milliseconds = x.Milliseconds,
+                               Bytes = x.Bytes,
+                               UnitPrice = x.UnitPrice
+                           }).ToList();
+                return results;
+            }
+            
+        }
+        
+
     }
 }
