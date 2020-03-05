@@ -10,12 +10,15 @@ using ChinookSystem.Data.DTOs;
 using ChinookSystem.Data.POCOs;
 using ChinookSystem.DAL;
 using System.ComponentModel;
+using DMIT2018Common.UserControls;
 #endregion
 
 namespace ChinookSystem.BLL
 {
     public class PlaylistTracksController
     {
+        // create a class level private data member to hold your list of errors
+        private List<string> errors = new List<string>();
         public List<UserPlaylistTrack> List_TracksForPlaylist(
             string playlistname, string username)
         {
@@ -44,24 +47,26 @@ namespace ChinookSystem.BLL
                 //determine if the playlist exists
                 //do a query to find the playlist
                 //test results == null
-                //yes
-                //create an instance of playlist
-                //load
-                //add
-                //set tracknumber to 1
+                //  yes
+                //      create an instance of playlist
+                //      load
+                //      add
+                //      set tracknumber to 1
                 //no
-                //query to find max tracknumber
-                //tracknumber++
-                //query to find track exists
-                //test results == null
-                //yes
-                //throw an exception
+                //      query to find track exists
+                //      test results == null
+                //          yes
+                //              throw an exception
+                //          no
+                //              query to find max tracknumber
+                //              tracknumber++
                 //create an instance of playlisttrack
                 //load
                 //add
                 //SaveChange
 
                 int tracknumber = 0;
+                PlaylistTrack newtrack = null;
                 //what would happen if there is no match for the
                 //   incoming parameter values
                 //we need to ensure that the results have a valid value
@@ -80,14 +85,66 @@ namespace ChinookSystem.BLL
                     exists = new Playlist();
                     exists.Name = playlistname;
                     exists.UserName = username;
-                    context.Playlists.Add(exists);
+                    context.Playlists.Add(exists);  
                     tracknumber = 1;
                 }
                 else
                 {
                     //existing playlist
+                    newtrack = (from x in context.PlaylistTracks
+                                       where x.Playlist.Name.Equals(playlistname)
+                                         && x.Playlist.UserName.Equals(username)
+                                         && x.TrackId == trackid
+                                       select x).FirstOrDefault();
+                    if (newtrack == null)
+                    {
+                        //not found can be added
+                        tracknumber = (from x in context.PlaylistTracks
+                                    where x.Playlist.Name.Equals(playlistname)
+                                      && x.Playlist.UserName.Equals(username)
+                                    select x.TrackNumber).Max();
+                        tracknumber++;
+                    }
+                    else
+                    {
+                        //found violates business rule
+                        //two ways of handling the message
+                        //a) single error
+                        //b) multiple business rule errors
 
+                        //a)
+                        //throw new Exception("Song already exists on playlist. Choose something else.");
+
+                        //b) use the BusinessRuleException class to throw the error
+                        //   this technique can be used in your BLL and onyour Web page
+                        //   to this technique, you will collect your errors within
+                        //       a List<string>; then throw the BusinessRuleException
+                        //       along with the List<string> errors
+                        //   
+                        errors.Add("**Song already exists on playlist. Choose something else.");
+
+                    }
                 }
+
+                //finish all possible business rule validation
+                if (errors.Count > 0)
+                {
+                    throw new BusinessRuleException("Adding Track", errors);
+                }
+
+                //add the new playlist track record
+                newtrack = new PlaylistTrack();
+                //when you do an .Add(xxx) to a entity, the record
+                //  is ONLY staged AND NOT yet on the database
+                //ANY expected pkey value DOES NOT yet exist
+
+                //newtrack.PlaylistId = exists.PlaylistId; removed
+                newtrack.TrackId = trackid;
+                newtrack.TrackNumber = tracknumber;
+                exists.PlaylistTracks.Add(newtrack);
+
+                //SaveChange is what actually affects the database
+                context.SaveChanges();
             }
         }//eom
         public void MoveTrack(string username, string playlistname, int trackid, int tracknumber, string direction)
