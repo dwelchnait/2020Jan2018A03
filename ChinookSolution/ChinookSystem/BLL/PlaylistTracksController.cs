@@ -151,8 +151,85 @@ namespace ChinookSystem.BLL
         {
             using (var context = new ChinookContext())
             {
-                //code to go here 
-
+                var exists = (from x in context.Playlists
+                              where x.UserName.Equals(username)
+                                && x.Name.Equals(playlistname)
+                              select x).FirstOrDefault();
+                if (exists == null)
+                {
+                    throw new Exception("Play list has been removed from the file");
+                }
+                else
+                {
+                    PlaylistTrack moveTrack = (from x in exists.PlaylistTracks
+                                               where x.TrackId == trackid
+                                               select x).FirstOrDefault();
+                    if (moveTrack == null)
+                    {
+                        throw new Exception("Play list song has been removed from the file.");
+                    }
+                    else
+                    {
+                        //up
+                        PlaylistTrack otherTrack = null;
+                        if (direction.Equals("up"))
+                        {
+                            if (moveTrack.TrackNumber == 1)
+                            {
+                                throw new Exception("Play list song already at the top");
+                            }
+                            else
+                            {
+                                //move it
+                                otherTrack = (from x in exists.PlaylistTracks
+                                              where x.TrackNumber == moveTrack.TrackNumber - 1
+                                              select x).FirstOrDefault();
+                                if (otherTrack == null)
+                                {
+                                    throw new Exception("Other play list song is missing.");
+                                }
+                                else
+                                {
+                                    //good to move
+                                    moveTrack.TrackNumber -= 1;
+                                    otherTrack.TrackNumber += 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //down
+                            if (moveTrack.TrackNumber == exists.PlaylistTracks.Count)
+                            {
+                                throw new Exception("Play list song already at the bottom");
+                            }
+                            else
+                            {
+                                //move it
+                                otherTrack = (from x in exists.PlaylistTracks
+                                              where x.TrackNumber == moveTrack.TrackNumber + 1
+                                              select x).FirstOrDefault();
+                                if (otherTrack == null)
+                                {
+                                    throw new Exception("Other play list song is missing.");
+                                }
+                                else
+                                {
+                                    //good to move
+                                    moveTrack.TrackNumber += 1;
+                                    otherTrack.TrackNumber -= 1;
+                                }
+                            }
+                        }
+                        //update database
+                        //a field update NOT an entity update
+                        context.Entry(moveTrack).Property(y => y.TrackNumber).IsModified = true;
+                        context.Entry(otherTrack).Property(y => y.TrackNumber).IsModified = true;
+                        //commit transaction
+                        context.SaveChanges();
+                    }
+                }
+                
             }
         }//eom
 

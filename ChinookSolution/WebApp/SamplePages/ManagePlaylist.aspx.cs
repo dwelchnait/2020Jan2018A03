@@ -92,20 +92,124 @@ namespace WebApp.SamplePages
 
         protected void MoveDown_Click(object sender, EventArgs e)
         {
-            //code to go here
+            if (PlayList.Rows.Count == 0)
+            {
+                MessageUserControl.ShowInfo("Moving Tracks", 
+                    "You must have a playlist showing. List either empty or you need to fetch your playlist.");
+            }
+            else
+            {
+                if(string.IsNullOrEmpty(PlaylistName.Text))
+                {
+                    MessageUserControl.ShowInfo("Missing Data",
+                        "You need a playlist name.");
+                }
+                else
+                {
+                    //validation about the move
+                    //only a single song selected
+                    //not the last item on the list
+                    int trackid = 0;
+                    int tracknumber = 0;
+                    int rowselected = 0;
+                    CheckBox playlistselection = null;
+                    for(int rowindex = 0; rowindex < PlayList.Rows.Count; rowindex++)
+                    {
+                        playlistselection = PlayList.Rows[rowindex].FindControl("Selected") as CheckBox;
+                        if (playlistselection.Checked)
+                        {
+                            rowselected++;
+                            trackid = int.Parse((PlayList.Rows[rowindex].FindControl("TrackID") as Label).Text);
+                            tracknumber = int.Parse((PlayList.Rows[rowindex].FindControl("TrackNumber") as Label).Text);
+                        }
+                    }
+
+                    if (rowselected != 1)
+                    {
+                        MessageUserControl.ShowInfo("Warning", "Select one track to be moved");
+                    }
+                    else
+                    {
+                        if (tracknumber == PlayList.Rows.Count)
+                        {
+                            MessageUserControl.ShowInfo("Warning", "Track cannot be moved down");
+                        }
+                        else
+                        {
+                            MoveTrack(trackid, tracknumber, "down");
+                        }
+                    }
+                }
+            }
  
         }
 
         protected void MoveUp_Click(object sender, EventArgs e)
         {
-            //code to go here
- 
+            if (PlayList.Rows.Count == 0)
+            {
+                MessageUserControl.ShowInfo("Moving Tracks",
+                    "You must have a playlist showing. List either empty or you need to fetch your playlist.");
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(PlaylistName.Text))
+                {
+                    MessageUserControl.ShowInfo("Missing Data",
+                        "You need a playlist name.");
+                }
+                else
+                {
+                    //validation about the move
+                    //only a single song selected
+                    //not the last item on the list
+                    int trackid = 0;
+                    int tracknumber = 0;
+                    int rowselected = 0;
+                    CheckBox playlistselection = null;
+                    for (int rowindex = 0; rowindex < PlayList.Rows.Count; rowindex++)
+                    {
+                        playlistselection = PlayList.Rows[rowindex].FindControl("Selected") as CheckBox;
+                        if (playlistselection.Checked)
+                        {
+                            rowselected++;
+                            trackid = int.Parse((PlayList.Rows[rowindex].FindControl("TrackID") as Label).Text);
+                            tracknumber = int.Parse((PlayList.Rows[rowindex].FindControl("TrackNumber") as Label).Text);
+                        }
+                    }
+
+                    if (rowselected != 1)
+                    {
+                        MessageUserControl.ShowInfo("Warning", "Select one track to be moved");
+                    }
+                    else
+                    {
+                        if (tracknumber == 1)
+                        {
+                            MessageUserControl.ShowInfo("Warning", "Track cannot be moved up");
+                        }
+                        else
+                        {
+                            MoveTrack(trackid, tracknumber, "up");
+                        }
+                    }
+                }
+            }
+
         }
 
         protected void MoveTrack(int trackid, int tracknumber, string direction)
         {
+            string username = "HansenB";
             //call BLL to move track
- 
+            MessageUserControl.TryRun(() =>
+            {
+                PlaylistTracksController sysmgr = new PlaylistTracksController();
+                sysmgr.MoveTrack(username, PlaylistName.Text, trackid, tracknumber, direction);
+                List<UserPlaylistTrack> info = sysmgr.List_TracksForPlaylist(PlaylistName.Text, username);
+                PlayList.DataSource = info;
+                PlayList.DataBind();
+            },"Moving track","Track has been moved");
         }
 
 
