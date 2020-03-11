@@ -177,7 +177,8 @@
             <span aria-hidden="true" class="glyphicon glyphicon-chevron-down"></span>
         </asp:LinkButton>&nbsp;&nbsp;
         <asp:LinkButton ID="DeleteTrack" runat="server"
-                CssClass="btn" OnClick="DeleteTrack_Click"  >
+                CssClass="btn" OnClick="DeleteTrack_Click"
+             OnClientClick="return confirm('Are you sure you wish to delete the song(s)?')">
             <span aria-hidden="true" class="glyphicon glyphicon-remove"
                  style="color:red"></span>
         </asp:LinkButton>
